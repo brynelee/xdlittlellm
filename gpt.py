@@ -19,6 +19,9 @@ class GPT(nn.Module):
     def forward(self, x, padding_mask): # x:(batch, seq)
         # 注意力遮挡
         src_mask = torch.triu(torch.ones(x.size()[1],x.size()[1]),diagonal=1).type(torch.bool).to(x.device)
+        # print("src_mask......")
+        # print(src_mask)
+        
         # embedding
         x = self.emb(x)
         # decoder
@@ -36,6 +39,7 @@ if  __name__ == '__main__':
 
     # 模拟输入
     x = torch.randint(0, tokenizer.vocab_size(), (5, 30))
+    print("x...... with shape of 5, 30")
     print(x)
     padding = torch.zeros(5, 30)
 
@@ -43,5 +47,5 @@ if  __name__ == '__main__':
     from config import MAX_SEQ_LEN
     gpt = GPT(d_model=64, nhead=2, feedforward=128, vocab_size=tokenizer.vocab_size(), seq_max_len=MAX_SEQ_LEN)
     y = gpt(x, padding)
-    print(y.shape)
+    print("y...... with shape of ", y.shape)
     print(y)
