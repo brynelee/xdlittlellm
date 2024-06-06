@@ -7,6 +7,10 @@ GPT_HEAD=6
 GPT_FF=1024
 GPT_BLOCKS=6
 
+# training
+TRAIN_ITER=1000
+BATCH_SIZE=50
+
 # special tokens
 IM_START='<|im_start|>'
 IM_END='<|im_end|>'
