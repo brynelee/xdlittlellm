@@ -63,17 +63,17 @@ if __name__ == '__main__':
         batch_padding_mask = batch_padding_mask.to(DEVICE)
 
         logtis = model(batch_ids, batch_padding_mask) # (batch, seq, vocab)
-        print(logtis.shape) # torch.Size([50, 217, 506])
+        print(logtis.shape) # torch.Size([50, 228, 506])
 
-        probs = logtis[:,:-1,:] # (batch, seq-1, vocab)
-        print(probs.shape) # torch.Size([50, 216, 506])
-        targets = batch_ids[:,1:] # (batch, seq-1)
-        print(targets.shape) # torch.Size([50, 216])
-        print(probs.size()) # torch.Size([50, 216, 506])
+        probs = logtis[:,:-1,:] # (batch, seq-1, vocab) 去掉最后一个终止符或者padding符号
+        print(probs.shape) # torch.Size([50, 227, 506])
+        targets = batch_ids[:,1:] # (batch, seq-1) 去掉最开始的开始符
+        print(targets.shape) # torch.Size([50, 227])
+        print(probs.size()) # torch.Size([50, 227, 506])
         # print(probs.view(-1, probs.size(2)))
         # print(targets.view(-1))
-        print(probs.reshape(-1, probs.size(2)).shape)
-        print(targets.reshape(-1).shape)
+        print(probs.reshape(-1, probs.size(2)).shape) # torch.Size([11350, 506]) 拍平的操作之后的形状是 (batch*seq-1, vocab)
+        print(targets.reshape(-1).shape) # torch.Size([11350]) 拍平的操作之后的形状是 (batch*seq-1)
         loss = F.cross_entropy(probs.reshape(-1, probs.size(2)), targets.reshape(-1), ignore_index=pad_ids[0])
 
         optimizer.zero_grad()
