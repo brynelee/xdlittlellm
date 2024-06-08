@@ -11,6 +11,10 @@ GPT_BLOCKS=6
 TRAIN_ITER=1000
 BATCH_SIZE=50
 
+# inference
+TEMPERATURE = 1.2
+TOP_K = 20
+
 # special tokens
 IM_START='<|im_start|>'
 IM_END='<|im_end|>'
