@@ -36,16 +36,16 @@ def chat(query):
 
     while len(ids) < MAX_SEQ_LEN:
         batch_ids = torch.tensor([ids], dtype=torch.long).to(DEVICE)
-        print("batch_ids.shape: ", batch_ids.shape) # torch.Size([1, 4])
+        logger.info(f"batch_ids.shape: {batch_ids.shape}") # torch.Size([1, 4])
         batch_padding_mask = torch.tensor([[0]*len(ids)], dtype=torch.bool).to(DEVICE)
-        print("batch padding_mask.shape: ", batch_padding_mask.shape) #  torch.Size([1, 4])
-
+        logger.info(f"batch_padding_mask.shape: {batch_padding_mask.shape}") #  torch.Size([1, 4])
+        
         with torch.no_grad():
             logits = model(batch_ids, batch_padding_mask) # (batch, seq, vocab)
-            print("logits.shape: ", logits.shape) # torch.Size([1, 4, 506])
+            logger.info(f"logits.shape: {logits.shape}") # torch.Size([1, 4, 506])
             # 多样性控制
-            logits_updated = logits[0, -1, :]/TEMPERATURE # torch.Size([506])
-            print("logits_updated.shape: ", logits_updated.shape)
+            logits_updated = logits[0, -1, :]/TEMPERATURE 
+            logger.info(f"logits_updated.shape: {logits_updated.shape}") # torch.Size([506])
             topk_logits, topk_ids = torch.topk(logits_updated, k=TOP_K)
             topk_logits, topk_ids = topk_logits.cpu(), topk_ids.cpu()
             # 从topk中随机选择一个token
